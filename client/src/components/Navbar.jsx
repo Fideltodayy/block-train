@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import useAuth from "@/hooks/useAuth";
 import { Button } from "./ui/button";
-import { createThirdwebClient } from "thirdweb"; // Create the thirdweb client with your client ID
-import { ConnectButton } from "thirdweb/react"; // The component we can prompt the user to connect their wallet with
-import { createWallet } from "thirdweb/wallets"; // Function to specify we want to use Coinbase smart wallet
-import { base, sepolia } from "thirdweb/chains"; // Import the the blockchain you want to use
+import { createThirdwebClient } from "thirdweb"; 
+import { ConnectButton } from "thirdweb/react"; 
+import { createWallet } from "thirdweb/wallets"; 
+import { base, sepolia } from "thirdweb/chains"; 
 
 export default function Navbar() {
   const { isLoggedIn, auth, logout } = useAuth();
@@ -49,26 +49,28 @@ export default function Navbar() {
                   </>
                 ) : (
                   <>
-                    <ConnectButton
-                      client={createThirdwebClient({
-                        clientId: "your-thirdweb-client-id-goes-here",
-                      })}
-                      wallets={[
-                        createWallet("com.coinbase.wallet", {
-                          walletConfig: {
-                            // Specify we do not want coinbase wallet browser extension support, just smart wallet
-                            options: "smartWalletOnly",
-                          },
-                          chains: [base, sepolia],
-                        }),
-                      ]}
-                    />
+                  
                     <Link to="/login" className="text-black font-bold">
                       Login
                     </Link>
                     <Link to="/register" className="text-black font-bold">
                       Register
                     </Link>
+
+                    {/* <ConnectButton
+                      client={createThirdwebClient({
+                        clientId: "your-thirdweb-client-id-goes-here",
+                      })}
+                      wallets={[
+                        createWallet("com.coinbase.wallet", {
+                          walletConfig: {
+                           
+                            options: "smartWalletOnly",
+                          },
+                          chains: [base, sepolia],
+                        }),
+                      ]}
+                    />  */}
                   </>
                 )}
               </div>
@@ -79,3 +81,5 @@ export default function Navbar() {
     </>
   );
 }
+
+
