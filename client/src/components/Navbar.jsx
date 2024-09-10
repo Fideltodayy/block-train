@@ -18,11 +18,14 @@ export default function Navbar() {
             </Link>
             <div className="flex justify-center items-center gap-8">
               <div className="hidden md:flex space-x-4 ">
+
                 <Link
                   to="/"
                   className="text-black  font-bold hover:text-orange-600"
                 >
+                  
                   Home
+
                 </Link>
                 <Link
                   to="/courses"
@@ -74,6 +77,7 @@ export default function Navbar() {
                   </>
                 )}
               </div>
+
             </div>
           </div>
         </div>
