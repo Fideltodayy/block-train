@@ -1,0 +1,21 @@
+# Node.js dependencies
+node_modules/
+uploads/
+# Environment variables
+.env
+.env.local
+
+# Build artifacts
+/build
+/dist
+/out
+
+# IDE/Editor files
+.vscode/
+.idea/
+
+# Miscellaneous
+.DS_Store
+*.log
+*.tmp
+logs
