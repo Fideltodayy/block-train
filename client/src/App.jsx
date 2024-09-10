@@ -44,7 +44,6 @@ import WaitingLobby from "./components/WaitingLobby";
 import TutorProfile from "./components/TutorProfile";
 // import LessonDetails from "./components/Student/LessonDetails";
 import MyLessons from "./components/Tutor/sections/MyLessons";
-
 export default function App() {
   return (
     <Routes>
