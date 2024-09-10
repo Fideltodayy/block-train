@@ -1,10 +1,21 @@
 import { Link } from "react-router-dom";
 import useAuth from "@/hooks/useAuth";
 import { Button } from "./ui/button";
-import { createThirdwebClient } from "thirdweb"; 
-import { ConnectButton } from "thirdweb/react"; 
-import { createWallet } from "thirdweb/wallets"; 
-import { base, sepolia } from "thirdweb/chains"; 
+import { ConnectButton } from "thirdweb/react";
+// import { ConnectEmbed } from "thirdweb/react";
+import { createThirdwebClient } from "thirdweb";
+import { createWallet, inAppWallet } from "thirdweb/wallets";
+
+const client = createThirdwebClient({
+  clientId: "e9900fc3e52a13708fbee51ea40eea9f",
+});
+
+const wallets = [
+  inAppWallet(),
+  createWallet("io.metamask"),
+  createWallet("com.coinbase.wallet"),
+  createWallet("me.rainbow"),
+];
 
 export default function Navbar() {
   const { isLoggedIn, auth, logout } = useAuth();
@@ -49,28 +60,15 @@ export default function Navbar() {
                   </>
                 ) : (
                   <>
-                  
+                    <div className=" bg-black">
+                      <ConnectButton client={client} wallets={wallets} />
+                    </div>
                     <Link to="/login" className="text-black font-bold">
                       Login
                     </Link>
                     <Link to="/register" className="text-black font-bold">
                       Register
                     </Link>
-
-                    {/* <ConnectButton
-                      client={createThirdwebClient({
-                        clientId: "your-thirdweb-client-id-goes-here",
-                      })}
-                      wallets={[
-                        createWallet("com.coinbase.wallet", {
-                          walletConfig: {
-                           
-                            options: "smartWalletOnly",
-                          },
-                          chains: [base, sepolia],
-                        }),
-                      ]}
-                    />  */}
                   </>
                 )}
               </div>
@@ -81,5 +79,3 @@ export default function Navbar() {
     </>
   );
 }
-
-
