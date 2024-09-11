@@ -18,7 +18,6 @@ export const web3wallet = await Web3Wallet.init({
 });
 export async function onSessionProposal({ id, params }) {
   try {
-    // ------- namespaces builder util ------------ //
     const approvedNamespaces = buildApprovedNamespaces({
       proposal: params,
       supportedNamespaces: {

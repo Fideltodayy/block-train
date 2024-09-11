@@ -102,7 +102,7 @@ export function TutorLayout() {
       <aside className="w-64 bg-gray-800 text-white flex flex-col">
         <div className="p-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 text-xl font-bold">
-            <span className="">ChesedTutor</span>
+            <span className="">blocktrainTutor</span>
           </Link>
         </div>
         <nav className="flex-1 px-2 py-4">{navItems.map(renderNavItem)}</nav>
@@ -130,7 +130,7 @@ export function TutorLayout() {
                   to="/tutor"
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
-                  <span className="sr-only">ChesedTutor</span>
+                  <span className="sr-only">blocktrainTutor</span>
                 </Link>
                 {navItems.map(renderNavItem)}
               </nav>

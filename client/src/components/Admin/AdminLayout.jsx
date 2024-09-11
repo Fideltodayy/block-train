@@ -77,8 +77,8 @@ export function AdminLayout() {
       <aside className="w-64 bg-gray-800 text-white flex flex-col">
         <div className="p-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 text-xl font-bold">
-            <img src="/chesed-logo.png" alt="Logo" className="h-8 w-8" />
-            <span>ChesedAdmin</span>
+            <img src="/blocktrain.webp" alt="Logo" className="h-8 w-8" />
+            <span>blocktrainAdmin</span>
           </Link>
         </div>
         <nav className="flex-1 px-2 py-4">
@@ -178,8 +178,8 @@ export function AdminLayout() {
                   to="/admin"
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
-                  <img src="/chesed-logo.png" alt="Logo" />
-                  <span className="sr-only">Chesed</span>
+                  <img src="/blocktrain.webp" alt="Logo" />
+                  <span className="sr-only">blocktrain</span>
                 </Link>
                 <Link
                   to="/admin"

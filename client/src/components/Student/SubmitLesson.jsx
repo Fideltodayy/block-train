@@ -102,7 +102,7 @@ export default function SubmitLesson() {
       const emailParams = {
         to_name: auth?.name, // Student's name
         to_email: auth?.email, // Student's email
-        from_name: "Chesed", // Your platform's name
+        from_name: "blocktrain", // Your platform's name
         message: "Your lesson has been successfully submitted.",
       };
 

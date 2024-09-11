@@ -18,16 +18,6 @@ export default function Landing() {
     <div className="">
       <Navbar />
       <Heroes />
-      {/* <CTA /> */}
-      <BrowseTutors />
-
-      <StudentLanding />
-      <CategoriesPage />
-      <PopularCourses />
-      {/* <Instructors /> */}
-      <PartnersSection />
-      {/* <NewsAndBlogsSection /> */}
-      <Footer />
     </div>
   );
 }

@@ -19,9 +19,15 @@ import { CalendarIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { toast, Toaster } from "sonner";
-import { PaystackButton } from "react-paystack";
+import { createThirdwebClient } from "thirdweb";
+import { ConnectButton } from "thirdweb/react";
+import { createWallet } from "thirdweb/wallets";
+import { base, sepolia } from "thirdweb/chains";
 
 const LessonDetails = () => {
+  const [connected, setConnected] = useState(false);
+  const [payeeAddress, setPayeeAddress] = useState("");
+  const [amount, setAmount] = useState(0);
   const { lessonId } = useParams();
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -53,6 +59,15 @@ const LessonDetails = () => {
 
     fetchLessonDetails();
   }, [lessonId, auth?.accessToken]);
+
+  const handleSendToEscrow = () => {
+    if (!payeeAddress || amount <= 0) {
+      alert("Please enter a valid payee address and amount.");
+      return;
+    }
+    // Logic to send tokens to escrow
+    alert(`Sent ${amount} tokens to ${payeeAddress} in escrow!`);
+  };
 
   console.log(lesson);
 
@@ -107,7 +122,7 @@ const LessonDetails = () => {
     }
 
     const event = {
-      summary: `Chesed Lesson: ${lesson.title}`,
+      summary: `blocktrain Lesson: ${lesson.title}`,
       location: "Google Meet (link will be provided)",
       description: lesson.description,
       start: {
@@ -205,33 +220,6 @@ const LessonDetails = () => {
   if (loading) return <Spinner />;
   if (!lesson) return <p>No lesson found</p>;
 
-  const config = {
-    reference: new Date().getTime().toString(),
-    email: lesson.student?.email,
-    // change this to the agreed amount
-    amount: lesson.proposedBudget * 100,
-    currency: "KES", // Change the currency to USD
-    publicKey: "pk_test_890d8a5a9d26cb4123a86f1b4679655493fbb60b",
-  };
-
-  const handlePaystackSuccessAction = (reference) => {
-    // Implementation for whatever you want to do with reference and after success call.
-    toast.success("Payment successful");
-    navigate(`/lesson/${lessonId}`);
-  };
-
-  // you can call this function anything
-  const handlePaystackCloseAction = () => {
-    // implementation for  whatever you want to do when the Paystack dialog closed.
-    toast.info("closed");
-  };
-
-  const componentProps = {
-    ...config,
-    text: "Pay now",
-    onSuccess: (reference) => handlePaystackSuccessAction(reference),
-    onClose: handlePaystackCloseAction,
-  };
   return (
     <div className="max-w-6xl mx-auto p-6 bg-white rounded-lg shadow-md font-sans">
       <Toaster />
@@ -298,14 +286,29 @@ const LessonDetails = () => {
               <h4 className="text-lg font-semibold text-gray-800 mb-2">
                 Make Payment
               </h4>
-              <Button
-                onClick={() => {
-                  navigate(`/payment/${lessonId}`);
+              <ConnectButton
+                client={createThirdwebClient({
+                  clientId: "your-thirdweb-client-id-goes-here",
+                })}
+                wallets={[
+                  createWallet("com.coinbase.wallet", {
+                    walletConfig: {
+                      options: "smartWalletOnly",
+                    },
+                    chains: [base, sepolia],
+                  }),
+                ]}
+                onConnect={handleSendToEscrow}
+                style={{
+                  backgroundColor: "#007bff",
+                  color: "#ffffff",
+                  padding: "10px 20px",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                  fontSize: "16px",
                 }}
-                className="bg-blue-600 text-white"
-              >
-                Pay Now
-              </Button>
+              />
             </div>
           )}
         </section>

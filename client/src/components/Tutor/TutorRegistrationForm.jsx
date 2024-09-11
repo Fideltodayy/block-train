@@ -199,7 +199,7 @@ const TutorRegistrationForm = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen flex-col p-4">
-      <h1 className="text-4xl font-bold mb-8 text-orange-600">ChesEd</h1>
+      <h1 className="text-4xl font-bold mb-8 text-orange-600">blocktrain</h1>
       <Card className="w-full max-w-md">
         <Toaster />
         <CardHeader>

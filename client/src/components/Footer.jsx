@@ -13,7 +13,9 @@ const Footer = () => {
     <footer className="bg-gray-900 text-gray-300 py-10 mt-10">
       <div className="container flex flex-row justify-between">
         <div className="w-full md:w-1/3 mb-6 md:mb-0 text-sm">
-          <h2 className="text-2xl font-bold text-orange-500 mb-4">Chesed</h2>
+          <h2 className="text-2xl font-bold text-orange-500 mb-4">
+            blocktrain
+          </h2>
           <p className="">Theodore Lowe, Ap #867-859 Sit Rd, </p>
           <p>Azusa New York</p>
           <p className="mt-2 text-2xl font-semibold">
@@ -122,7 +124,9 @@ const Footer = () => {
         </div>
       </div>
       <div className="text-center mt-10 text-gray-500 text-sm">
-        <p>&copy; {currentYear} Chesed All Rights Reserved by RadiusTheme</p>
+        <p>
+          &copy; {currentYear} blocktrain All Rights Reserved by RadiusTheme
+        </p>
         <p>
           <a href="#" className="hover:underline text-xs">
             Privacy Policy

@@ -55,7 +55,7 @@ const Step5 = ({ formData, onChange, onFileChange, prevStep, onSubmit }) => {
         <Button onClick={prevStep} variant="outline">
           Back
         </Button>
-        <Button onClick={onSubmit}>Submit</Button>
+        <Button onClick={onSubmit}>Register and Create a smart wallet</Button>
       </div>
     </div>
   );

@@ -220,7 +220,7 @@ const Lessons = () => {
     }
 
     const event = {
-      summary: "Chesed Lesson: " + lesson.title,
+      summary: "blocktrain Lesson: " + lesson.title,
       location: "Google Meet (link will be provided)",
       description: lesson.description,
       start: {
