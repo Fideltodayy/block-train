@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "@/api/axios";
 import { useParams, useNavigate } from "react-router-dom";
 import useAuth from "@/hooks/useAuth";
@@ -22,12 +22,10 @@ import { toast, Toaster } from "sonner";
 import { createThirdwebClient } from "thirdweb";
 import { ConnectButton } from "thirdweb/react";
 import { createWallet } from "thirdweb/wallets";
-import { base, sepolia } from "thirdweb/chains";
+import { baseSepolia } from "thirdweb/chains";
 
 const LessonDetails = () => {
-  const [connected, setConnected] = useState(false);
   const [payeeAddress, setPayeeAddress] = useState("");
-  const [amount, setAmount] = useState(0);
   const { lessonId } = useParams();
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -37,7 +35,8 @@ const LessonDetails = () => {
   const [start, setStart] = useState(new Date());
   const session = useSession();
   const supabase = useSupabaseClient();
-
+  const amount = 1;
+  const [isConnected, setIsConnected] = useState(false);
   useEffect(() => {
     const fetchLessonDetails = async () => {
       try {
@@ -50,6 +49,7 @@ const LessonDetails = () => {
         }
         const response = await axios.get(`/lessons/${lessonId}`, config);
         setLesson(response.data);
+        setPayeeAddress(lesson.tutor.username);
       } catch (error) {
         console.error("Error fetching lesson details", error);
       } finally {
@@ -59,15 +59,6 @@ const LessonDetails = () => {
 
     fetchLessonDetails();
   }, [lessonId, auth?.accessToken]);
-
-  const handleSendToEscrow = () => {
-    if (!payeeAddress || amount <= 0) {
-      alert("Please enter a valid payee address and amount.");
-      return;
-    }
-    // Logic to send tokens to escrow
-    alert(`Sent ${amount} tokens to ${payeeAddress} in escrow!`);
-  };
 
   console.log(lesson);
 
@@ -88,17 +79,13 @@ const LessonDetails = () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
     try {
-      const response = await axios.post(
-        `/lessons/submit-lesson/${lessonId}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${auth?.accessToken}`,
-          },
-          withCredentials: true,
-        }
-      );
+      await axios.post(`/lessons/submit-lesson/${lessonId}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${auth?.accessToken}`,
+        },
+        withCredentials: true,
+      });
       toast.success("Written lesson submitted successfully!");
     } catch (error) {
       console.error("Error submitting written lesson:", error);
@@ -180,6 +167,15 @@ const LessonDetails = () => {
       console.error("Error scheduling virtual lesson:", error);
       toast.error("Failed to schedule virtual lesson");
     }
+  };
+
+  const handleSendToEscrow = () => {
+    if (payeeAddress || amount <= 0) {
+      alert("Please enter a valid payee address and amount.");
+      return;
+    }
+    // Logic to send tokens to escrow
+    alert(`Sent ${amount} tokens to ${payeeAddress} in escrow!`);
   };
 
   const googleSignIn = async () => {
@@ -286,19 +282,23 @@ const LessonDetails = () => {
               <h4 className="text-lg font-semibold text-gray-800 mb-2">
                 Make Payment
               </h4>
+              {/* if connected send to escrow */}
+
               <ConnectButton
                 client={createThirdwebClient({
-                  clientId: "your-thirdweb-client-id-goes-here",
+                  clientId: "e9900fc3e52a13708fbee51ea40eea9f",
                 })}
                 wallets={[
                   createWallet("com.coinbase.wallet", {
                     walletConfig: {
                       options: "smartWalletOnly",
                     },
-                    chains: [base, sepolia],
+                    chains: [baseSepolia],
                   }),
                 ]}
-                onConnect={handleSendToEscrow}
+                onConnect={() => {
+                  setIsConnected(true);
+                }}
                 style={{
                   backgroundColor: "#007bff",
                   color: "#ffffff",

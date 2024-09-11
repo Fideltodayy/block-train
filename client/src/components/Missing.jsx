@@ -1,89 +1,97 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createThirdwebClient } from "thirdweb";
 import { ConnectButton } from "thirdweb/react";
-import { createWallet } from "thirdweb/wallets";
-import { base, sepolia } from "thirdweb/chains";
+import { createWallet, smartWallet } from "thirdweb/wallets";
+import { baseSepolia } from "thirdweb/chains";
+import {
+  newAgreement,
+  deposit,
+  agree,
+  releaseFunds,
+} from "../../../contracts/index";
 
 const PaymentUI = () => {
   const [connected, setConnected] = useState(false);
+  const [account, setAccount] = useState("");
   const [payeeAddress, setPayeeAddress] = useState("");
-  const [amount, setAmount] = useState(0);
+  const [arbitratorAddress, setArbitratorAddress] = useState(
+    "0x5A883D2b78929260b8A555f3D3a187764131f9C8"
+  );
+  const [amount, setAmount] = useState(1);
 
-  const handleConnect = () => {
-    setConnected(true);
+  const client = createThirdwebClient({
+    clientId: "e9900fc3e52a13708fbee51ea40eea9f",
+  });
+
+  useEffect(() => {
+    if (connected) {
+      fetchAccount();
+    }
+  }, [connected]);
+
+  const fetchAccount = async () => {
+    try {
+      const accounts = await client.wallet.getAddresses();
+      if (accounts.length > 0) {
+        setAccount(accounts[0]);
+      }
+    } catch (error) {
+      console.error("Error fetching account:", error);
+    }
   };
 
-  const handleSendToEscrow = () => {
-    if (!payeeAddress || amount <= 0) {
-      alert("Please enter a valid payee address and amount.");
+  const handleCreateAgreement = async () => {
+    if (!payeeAddress || !arbitratorAddress || amount <= 0) {
+      alert(
+        "Please enter valid payee address, arbitrator address, and amount."
+      );
       return;
     }
-    // Logic to send tokens to escrow
-    alert(`Sent ${amount} tokens to ${payeeAddress} in escrow!`);
+    try {
+      const result = await newAgreement(
+        payeeAddress,
+        arbitratorAddress,
+        amount,
+        account
+      );
+      console.log("Agreement created:", result);
+      alert(`Agreement created successfully!`);
+    } catch (error) {
+      console.error("Error creating agreement:", error);
+      alert("Error creating agreement. Check console for details.");
+    }
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h1 style={styles.title}>Pay the tutor</h1>
+        <h1 style={styles.title}>Create Escrow Agreement</h1>
         <p style={styles.subtitle}>Secure payments using escrow</p>
 
         <div style={styles.connectSection}>
           {!connected ? (
             <ConnectButton
-              client={createThirdwebClient({
-                clientId: "your-thirdweb-client-id-goes-here",
-              })}
+              client={client}
               wallets={[
-                createWallet("com.coinbase.wallet", {
+                smartWallet("com.coinbase.wallet", {
                   walletConfig: {
                     options: "smartWalletOnly",
                   },
-                  chains: [base, sepolia],
+                  chains: [baseSepolia],
+                  sponsorGas: true, // enable sponsored transactions
                 }),
               ]}
-              onConnect={handleConnect}
+              onConnect={() => handleCreateAgreement()}
               style={styles.connectButton}
             />
           ) : (
-            <p style={styles.connectedMessage}>Wallet Connected!</p>
+            <p style={styles.connectedMessage}>Wallet Connected: {account}</p>
           )}
         </div>
-
-        {connected && (
-          <>
-            <div style={styles.inputSection}>
-              <label style={styles.label}>Payee Address</label>
-              <input
-                style={styles.input}
-                type="text"
-                value={payeeAddress}
-                onChange={(e) => setPayeeAddress(e.target.value)}
-                placeholder="Enter recipient's wallet address"
-              />
-            </div>
-
-            <div style={styles.inputSection}>
-              <label style={styles.label}>Amount (in tokens)</label>
-              <input
-                style={styles.input}
-                type="number"
-                value={amount}
-                onChange={(e) => setAmount(Number(e.target.value))}
-                placeholder="Enter amount"
-              />
-            </div>
-
-            <button style={styles.sendButton} onClick={handleSendToEscrow}>
-              Send to Escrow
-            </button>
-          </>
-        )}
       </div>
     </div>
   );
 };
-
 const styles = {
   container: {
     height: "100vh",

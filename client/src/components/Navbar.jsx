@@ -37,7 +37,7 @@ export default function Navbar() {
                       Register
                     </Link>
 
-                    <ConnectButton
+                    {/* <ConnectButton
                       client={createThirdwebClient({
                         clientId: "your-thirdweb-client-id-goes-here",
                       })}
@@ -49,7 +49,7 @@ export default function Navbar() {
                           chains: [base, sepolia],
                         }),
                       ]}
-                    />
+                    /> */}
                   </>
                 )}
               </div>

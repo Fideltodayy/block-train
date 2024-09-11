@@ -53,7 +53,8 @@
     "stripe": "^16.9.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
-    "thirdweb": "^5.53.0"
+    "thirdweb": "^5.53.0",
+    "web3": "^4.12.1"
   },
   "devDependencies": {
     "@types/node": "^20.14.9",
