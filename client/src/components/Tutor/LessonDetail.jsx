@@ -169,6 +169,20 @@ const LessonDetails = () => {
     }
   };
 
+  const [lessonCompleted, setLessonCompleted] = useState(false);
+
+  const handleToggleChange = () => {
+    if (lessonCompleted) {
+      // If the lesson was previously marked as done, toggle it back to not done
+      setLessonCompleted(false);
+    } else {
+      // Confirm the lesson is done and call the handler
+      // handleCreateAgreement();
+      alert(`Sent ${amount} tokens to ${payeeAddress} in escrow!`);
+
+      setLessonCompleted(true);
+    }
+  };
   const handleSendToEscrow = () => {
     if (payeeAddress || amount <= 0) {
       alert("Please enter a valid payee address and amount.");
@@ -253,13 +267,12 @@ const LessonDetails = () => {
           </p>
         </section>
 
-        {/* Status and Payment Information */}
         <section className="p-6 bg-gray-100 rounded-lg shadow-sm">
           <h3 className="text-xl font-semibold text-blue-600 border-b border-gray-300 pb-2 mb-4">
             Status & Payment Information
           </h3>
           <p>
-            <strong>lesson Status:</strong>
+            <strong>Lesson Status:</strong>
             <Badge
               variant={
                 lesson.status === "pending"
@@ -283,32 +296,28 @@ const LessonDetails = () => {
                 Make Payment
               </h4>
               {/* if connected send to escrow */}
+              <button className="px-4 py-2 bg-blue-500 text-white rounded">
+                Pay
+              </button>
+            </div>
+          )}
 
-              <ConnectButton
-                client={createThirdwebClient({
-                  clientId: "e9900fc3e52a13708fbee51ea40eea9f",
-                })}
-                wallets={[
-                  createWallet("com.coinbase.wallet", {
-                    walletConfig: {
-                      options: "smartWalletOnly",
-                    },
-                    chains: [baseSepolia],
-                  }),
-                ]}
-                onConnect={() => {
-                  setIsConnected(true);
-                }}
-                style={{
-                  backgroundColor: "#007bff",
-                  color: "#ffffff",
-                  padding: "10px 20px",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                  fontSize: "16px",
-                }}
-              />
+          {/* New section for lesson completion toggle */}
+          {lesson.status === "completed" && (
+            <div className="mt-4">
+              <h4 className="text-lg font-semibold text-gray-800 mb-2">
+                Confirm Lesson Completion
+              </h4>
+              <button
+                onClick={handleToggleChange}
+                className={`px-4 py-2 rounded ${
+                  lessonCompleted
+                    ? "bg-green-500 text-white"
+                    : "bg-gray-500 text-white"
+                }`}
+              >
+                {lessonCompleted ? "Lesson Completed" : "Mark as Completed"}
+              </button>
             </div>
           )}
         </section>

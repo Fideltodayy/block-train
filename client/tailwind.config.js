@@ -30,6 +30,7 @@ module.exports = {
       fontFamily: {
         sans: ["Roboto", "sans-serif"],
         raleway: ["Raleway", "sans-serif"],
+        montserrat: ["Montserrat", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

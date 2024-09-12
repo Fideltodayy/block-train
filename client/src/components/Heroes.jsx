@@ -57,7 +57,7 @@ const Heroes = () => {
               Offer lessons
             </Button>
             <Button
-              onClick={() => navigate("/login")}
+              onClick={() => navigate("/submit-lesson")}
               variant="outline"
               className="bg-orange-600 text-white px-6 py-3 rounded-lg hover:text-orange-500 border-2 transition"
             >

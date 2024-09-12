@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import useAuth from "@/hooks/useAuth";
-import { Badge } from "@/components/ui/badge";
+import LessonItem from "../LessonItem";
 
 function StudentLessons({ lessons }) {
   const navigate = useNavigate();
@@ -64,56 +64,5 @@ function StudentLessons({ lessons }) {
     </div>
   );
 }
-
-const LessonItem = ({ lesson }) => {
-  const navigate = useNavigate();
-
-  const handlePayNow = () => {
-    // Replace with your payment route or logic
-    navigate(`/payment/${lesson._id}`);
-  };
-
-  return (
-    <tr className="border-b">
-      <td className="py-2   font-medium">{lesson.title}</td>
-      <td className="py-2 ">{new Date(lesson.dueDate).toLocaleDateString()}</td>
-      <td className="py-2 ">
-        {lesson?.agreedPrice ? `$${lesson.agreedPrice}` : "pending"}
-      </td>
-      <td className="py-2 ">
-        <Badge
-          color="primary"
-          className="capitalize"
-          style={{
-            backgroundColor: lesson.status === "completed" ? "green" : "red",
-          }}
-        >
-          {lesson.status}
-        </Badge>
-      </td>
-      <td className="py-2 ">{lesson.tutor?.username || "N/A"}</td>
-
-      <td className="py-2 ">{lesson.paid ? "Yes" : "No"}</td>
-      <td className="py-2  flex gap-2 justify-center">
-        <Button
-          variant="outline"
-          className="text-orange-800 border-orange-800 hover:bg-orange-200"
-          onClick={() => navigate(`/lesson/${lesson._id}`)}
-        >
-          View Details
-        </Button>
-        {!lesson.paid && (
-          <Button
-            variant="outline"
-            className="text-red-800 border-red-800 hover:bg-red-200"
-            onClick={handlePayNow}
-          >
-            Pay Now
-          </Button>
-        )}
-      </td>
-    </tr>
-  );
-};
 
 export default StudentLessons;
